@@ -8,6 +8,7 @@ Welcome to FunnyAI App, your go-to platform for generating hilarious jokes and w
 - **Subject:** Animals, Travel, Family, Technology
 - **Types:** Pun, Absurd, Humor, Wordplay
 - **Narrative Style:** Direct storytelling, Dialogue between characters, Reference-based
+- **Temperatures:** Level of Fun : low, medium, high
 
 ## Dependencies
 
@@ -64,11 +65,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Result 
 
-![image info](images/week2-01.png)
+![image info](images/week-2-board.png)
 
-![image info](images/week2-02.png)
+![image info](images/week-2-result.png)
 
-![image info](images/result-week2.png)
 
 ## Learn More
 
