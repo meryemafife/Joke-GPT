@@ -4,7 +4,11 @@ import { useState } from "react";
 import { useChat } from "ai/react";
 
 export default function Chat() {
-  const { messages, append, isLoading } = useChat();
+  const { messages,input, append,isLoading } = useChat({
+    body: {
+      temperature: 0.5,
+    },
+  });
   const Subject = [
     { emoji: "🦝", value: "Animals" },
     { emoji: "🕵️", value: "Travel" },
@@ -29,6 +33,7 @@ export default function Chat() {
     Types: "",
 	NarrativeStyle:"",
   }); 
+  const [temperature, setTemperature] = useState(0.5);
 
   const handleChange = ({
     target: { name, value },
@@ -124,20 +129,32 @@ export default function Chat() {
             </div>
           </div>
 
+          <div className="flex flex-wrap justify-center">
+          <label className="text-black ext-xl font-semibold mr-2"> HeatLevel </label>
+            <input 
+              type="range" min="0" max="1" step="0.05" className="w-64" 
+              disabled={isLoading}
+              value={temperature}
+              onChange={(e) => setTemperature(parseFloat(e.target.value))}
+              />
+          </div>
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
             disabled={isLoading || (!state.Subject || !state.Types || !state.NarrativeStyle)}
             onClick={() =>
               append({
                 role: "user",
-                content: `Generate an ${state.Types} joke in English. The joke should be about ${state.Subject} and the narrative style should be ${state.NarrativeStyle}`,
+                content: `Generate an ${state.Types} short joke in English. The joke should be about ${state.Subject} and the narrative style should be ${state.NarrativeStyle}`,
 				
-              })
+              },{
+              options: { 
+                body: { 
+                  temperature: temperature,} } }
+              )
             }
           >
             Generate Joke
           </button>
-
           <div
             hidden={
               messages.length === 0 ||
