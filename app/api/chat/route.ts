@@ -7,15 +7,12 @@ const openai = new OpenAI({
 
 export const runtime = 'edge';
 
-export async function generateJoke(req: Request) {
-  const { messages ,temperature} = await req.json();
-
-  console.log(`temperature: ${temperature}`);
+export async function POST(req: Request) {
+  const { messages } = await req.json();
 
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
     stream: true,
-    temperature: temperature,
     messages: [
       {
         role: "system",
@@ -29,4 +26,3 @@ export async function generateJoke(req: Request) {
   const stream = OpenAIStream(response);
   return new StreamingTextResponse(stream);
 }
-

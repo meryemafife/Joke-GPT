@@ -62,6 +62,13 @@ To get started with FunnyAI App:
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Result 
+
+[image info](images/week2-01.png)
+
+[image info](images/week2-01.png)
+
+[image info](images/result-week2.png)
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
