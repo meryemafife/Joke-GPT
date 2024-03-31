@@ -66,7 +66,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ![image info](images/week2-01.png)
 
-![image info](images/week2-01.png)
+![image info](images/week2-02.png)
 
 ![image info](images/result-week2.png)
 
