@@ -1,185 +1,205 @@
 "use client";
 
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { useChat } from "ai/react";
 
 export default function Chat() {
-  const { messages, append, isLoading } = useChat();
-  const Subject = [
-    { emoji: "🦝", value: "Animals" },
-    { emoji: "🕵️", value: "Travel" },
-    { emoji: "💑", value: "Family:" },
-    { emoji: "🚀", value: "Technology" },
-  ];
-  const Types = [
-    { emoji: "😊", value: "Pun" },
-    { emoji: "😢", value: "Absurd" },
-    { emoji: "😏", value: "Humor" },
-    { emoji: "😂", value: "Wordplay" },
-  ];
+	const { messages, append, isLoading } = useChat();
 
-  const NarrativeStyle = [
-    { emoji: "🎈", value: "Direct storytelling" },
-    { emoji: "🎭", value: "Dialogue between characters" },
-    { emoji: "🪡", value: "reference-based" },
-  ];
-   
-  const Temperatures = [
-    { emoji: "🤏", value: "low" },
-    { emoji: "✋", value: "medium" },
-    { emoji: "🔊", value: "high" },
-  ];
+	// const [state, setState] = useState({
+	// 	Subject: "",
+	// 	Types: "",
+	// 	Tone: "",
+	// 	NarrativeStyle: "",
+	// 	Temperature: 0,
+	// });
+	const [subject, setSubject] = useState("");
+	const [tone, setTone] = useState("");
+	const [style, setStyle] = useState("");
+	const [temperature, setTemperature] = useState(0.5);
+	const [joke, setJoke] = useState("");
 
-  
-  const [state, setState] = useState({
-    Subject: "",
-    Types: "",
-	  NarrativeStyle:"",
-    Temperature: "",
-  }); 
+	const Subject = [
+		{ emoji: "🦝", value: "Animals" },
+		{ emoji: "🕵️", value: "Travel" },
+		{ emoji: "💑", value: "Family" },
+		{ emoji: "🚀", value: "Technology" },
+	];
+	const Tone = [
+		{ emoji: "😊", value: "Sarcastic" },
+		{ emoji: "😢", value: "Silly" },
+		{ emoji: "😏", value: "Dark" },
+		{ emoji: "😂", value: "Goofy" },
+	];
 
-  const handleChange = ({
-    target: { name, value },
-  }: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
-      [name]: value,
-    });
-  };
+	const Style = [
+		{ emoji: "🎈", value: "Pun" },
+		{ emoji: "🎭", value: "Knock-knock" },
+		{ emoji: "🪡", value: "Story" },
+	];
 
-  return (
-    <main className="mx-auto w-full p-24 flex flex-col">
-      <div className="p4 m-4">
-        <div className="flex flex-col items-center justify-center space-y-8 text-white">
-			<div className="flex flex-col items-center relative min-h-screen">
-				<h2 className="font-raleway font-bold text-6xl text-secondary pt-20 pb-6 md:text-3xl">
-					<span className="text-active">Funny AI</span> App
-				</h2>
-				<h3 className="text-danger text-2xl font-raleway font-bold uppercase tracking-wide mb-8 md:text-base md:px-4 md:text-center">
-					"Get ready because our humor-filled journey is about to begin: Welcome to the World of Jokes!"
-				</h3>
+	// const handleChange = ({
+	// 	target: { name, value },
+	// }: React.ChangeEvent<HTMLInputElement>) => {
+	// 	setState({
+	// 		...state,
+	// 		[name]: value,
+	// 	});
+	// };
+
+	const handleChangeSubject = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setSubject(event.target.value);
+	};
+
+	const handleChangeTone = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setTone(event.target.value);
+	};
+
+	const handleChangeStyle = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setStyle(event.target.value);
+	};
+
+	const handleChangeTemperature = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setTemperature(parseFloat(event.target.value));
+	};
+
+	const handleGenerateJoke = () => {
+		const prompt = `Write a ${tone} ${Style} joke about ${subject}`;
+	};
+
+	return (
+		<main className="mx-auto w-full">
+			<div className="p4 m-4">
+				<div className="flex flex-col items-center relative ">
+					<h2 className="font-raleway font-bold text-6xl text-secondary pb-6 md:text-3xl">
+						<span className="text-active">Funny AI</span> App{" "}
+					</h2>
+					<h3 className="text-danger text-2xl font-raleway font-bold uppercase tracking-wide mb-8 md:text-base md:px-4 md:text-center">
+						Get ready because our humor-filled journey is about to begin:
+						Welcome to the World of Jokes!{" "}
+					</h3>
+				</div>
+
+				<div className="flex">
+					<div className="w-1/4">
+						<div className="space-y-1 bg-opacity-25 bg-gray-700 rounded-lg p-4">
+							<h3 className="text-xl font-semibold">Subject</h3>
+
+							<div className="flex flex-col mb-12">
+								{Subject.map(({ value, emoji }) => (
+									<div
+										key={value}
+										className="p-1 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
+									>
+										<input
+											id={value}
+											type="radio"
+											value={value}
+											name="Subject"
+											onChange={handleChangeSubject}
+										/>
+										<label className="ml-2" htmlFor={value}>
+											{`${emoji} ${value}`}
+										</label>
+									</div>
+								))}
+							</div>
+
+							<h3 className="text-xl font-semibold ">Tone</h3>
+
+							<div className="flex flex-col">
+								{Tone.map(({ value, emoji }) => (
+									<div
+										key={value}
+										className="p-1 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
+									>
+										<input
+											id={value}
+											type="radio"
+											name="Tone"
+											value={value}
+											onChange={handleChangeTone}
+										/>
+										<label className="ml-2" htmlFor={value}>
+											{`${emoji} ${value}`}
+										</label>
+									</div>
+								))}
+							</div>
+
+							<h3 className="text-xl font-semibold ">Style</h3>
+
+							<div className="flex flex-col">
+								{Style.map(({ value, emoji }) => (
+									<div
+										key={value}
+										className="p-1 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
+									>
+										<input
+											id={value}
+											type="radio"
+											name="NarrativeStyle"
+											value={value}
+											onChange={handleChangeStyle}
+										/>
+										<label className="ml-2" htmlFor={value}>
+											{`${emoji} ${value}`}
+										</label>
+									</div>
+								))}
+							</div>
+
+							<h3 className="text-xl font-semibold">Temperature</h3>
+							<div className="w-64">
+								<input
+									type="range"
+									min="0"
+									max="1"
+									step="0.01"
+									value={temperature}
+									onChange={handleChangeTemperature}
+									className="w-full"
+								/>
+								<div className="flex justify-between mt-2">
+									<span>0</span>
+									<span>{temperature}</span>
+									<span>1</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className="flex-1  mx-8">
+						<div
+							// hidden={
+							// 	messages.length === 0 ||
+							// 	messages[messages.length - 1]?.content.startsWith("Generate")
+							// }
+							className="bg-opacity-25 bg-gray-700 rounded-lg p-4 h-[90%]"
+						>
+							{/* {messages[messages.length - 1]?.content} */}
+						</div>
+						<div className="flex justify-center items-center">
+							<button
+								className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 m-4 "
+								disabled={isLoading || !subject || !tone || !style}
+								onClick={handleGenerateJoke}
+							>
+								Generate Joke
+							</button>
+
+							<button
+								className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+								disabled={isLoading || !subject || !tone || !style}
+								onClick={() => {}}
+							>
+								Evaluate Joke
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
-
-          <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-4">
-            <h3 className="text-xl font-semibold">Subject</h3>
-
-            <div className="flex flex-wrap justify-center">
-              {Subject.map(({ value, emoji }) => (
-                <div
-                  key={value}
-                  className="p-4 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
-                >
-                  <input
-                    id={value}
-                    type="radio"
-                    value={value}
-                    name="Subject"
-                    onChange={handleChange}
-                  />
-                  <label className="ml-2" htmlFor={value}>
-                    {`${emoji} ${value}`}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-4">
-            <h3 className="text-xl font-semibold">Types</h3>
-
-            <div className="flex flex-wrap justify-center">
-              {Types.map(({ value, emoji }) => (
-                <div
-                  key={value}
-                  className="p-4 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
-                >
-                  <input
-                    id={value}
-                    type="radio"
-                    name="Types"
-                    value={value}
-                    onChange={handleChange}
-                  />
-                  <label className="ml-2" htmlFor={value}>
-                    {`${emoji} ${value}`}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-
-		  <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-4">
-            <h3 className="text-xl font-semibold">NarrativeStyle</h3>
-
-            <div className="flex flex-wrap justify-center">
-              {NarrativeStyle.map(({ value, emoji }) => (
-                <div
-                  key={value}
-                  className="p-4 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
-                >
-                  <input
-                    id={value}
-                    type="radio"
-                    name="NarrativeStyle"
-                    value={value}
-                    onChange={handleChange}
-                  />
-                  <label className="ml-2" htmlFor={value}>
-                    {`${emoji} ${value}`}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-4">
-          <h3 className="text-xl font-semibold">Level of fun</h3>
-          <div className="flex flex-wrap justify-center">
-              {Temperatures.map(({ value }) => (
-                <div
-                  key={value}
-                  className="p-4 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
-                >
-                  <input
-                    id={value}
-                    type="radio"
-                    name="Temperature"
-                    value={value}
-                    onChange={handleChange}
-                  />
-                  <label className="ml-2" htmlFor={value}>
-                    {`${value}`}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-            disabled={isLoading || (!state.Subject || !state.Types || !state.NarrativeStyle || !state.Temperature)}
-            onClick={() =>
-              append({
-                role: "user",
-                content: `Generate an ${state.Types} short joke and and ${state.Temperature} level of fun. The joke should be about ${state.Subject} and the narrative style should be ${state.NarrativeStyle}`,
-				
-              })
-            }
-          >
-            Generate Joke
-          </button>
-
-          <div
-            hidden={
-              messages.length === 0 ||
-              messages[messages.length - 1]?.content.startsWith("Generate")
-            }
-            className="bg-opacity-25 bg-gray-700 rounded-lg p-4"
-          >
-            {messages[messages.length - 1]?.content}
-          </div>
-        </div>
-      </div>
-    </main>
-  );
+		</main>
+	);
 }
